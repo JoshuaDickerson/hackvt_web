@@ -44,3 +44,14 @@ ul{
 	background : #eee;
 	border:solid 2px #333;
 }
+
+#formList{
+	background: #fff;
+	text-align: left;
+	margin: -60px 0;
+	z-index: 1000;
+}
+
+#getQrButt{
+	display:none;
+}

@@ -116,19 +116,21 @@ $(document).ready(function()
 			</div>
 		</div>
 		<div class="row">
+			<div class="span1">
+			</div>
 			<div class="span4" style="text-align:center">
 				<img src="addImages/PhotoNotAvailable.gif" id="emptyImg"/>
 				<div id="addImgButt">
 					Add a band pic
 				</div>
-				<form id="myForm" action="imageCatch.php" method="post" enctype="multipart/form-data">
+				<form id="myForm" action="http://localhost/HackVtProject/api/api/singleEvent.php" method="post" enctype="multipart/form-data">
 					<ul id="formList">
 						<li><input type="file" name="myFile" id="fileInput" /></li>
 						<li><input type="submit" value="Add Image" /></li>
 					</ul>
 				</form>
 			</div>
-			<div class="span2">
+			<div class="span1">
 				<div id="progress">
         			<div id="bar"></div>
         			<div id="percent">0%</div >

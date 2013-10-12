@@ -3,7 +3,7 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
 		<link rel="stylesheet" type="text/css" href="css/styles.css">
-		<link rel="stylesheet" type="text/css" href="css/addBand.css">
+		<link rel="stylesheet" type="text/css" href="css/addEvent.css">
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
 		<script src="http://malsup.github.com/jquery.form.js"></script>
 		<script>
@@ -36,7 +36,13 @@ $(document).ready(function()
 	{
 		console.log(response);
 		$('#emptyImg').attr('src',function(i,e){
- 			return e.replace("addImages/PhotoNotAvailable.gif",response.responseText);
+			$('#getQrButt').show();
+			var ed = response.responseText.split("/");
+			var eventI = ed[1].split(".");
+			window.eventId = eventI[0];
+			alert(window.eventId);
+ 			return e.replace("images/no_poster.jpg",response.responseText);
+
 		});
 	},
 	error: function()
@@ -51,15 +57,24 @@ $(document).ready(function()
 
      $('#qrResult').hide();
 
-     $('#createProfileButton').click(function(){
+     $('#getQrButt').click(function(){
+     	var params = {
+     			"event_name" : $('#event_name').val(),
+     			"event_location" : $("#event_location").val(),
+     			"event_date" : $("#event_date").val(),
+     			"event_city" : $("#event_city").val(),
+     			"event_description" : $("#event_description").val(),
+     			"band_id" : 1
+     			}
 	     $.ajax({
-				type: "POST",
-				url: "http://192.168.8.246",
-				dataType: DATATYPE,
+				type: "PUT",
+				url: "http://localhost/HackVtProject/api/singleEvent.php",
+				dataType: "json",
+				data: params,
 				success: function(data){
 					console.log("Pull API Data: SUCCESS");
-					// console.log(data);
-					CALLBACK(data);
+					console.log(data);
+					$('#qrPopup').fadeIn();
 				},
 				error: function(xhr, errorType, error){
 					// alert("error: "+xhr.status);
@@ -83,6 +98,10 @@ $(document).ready(function()
 							break;
 						case 200:
 							console.log("Pull API data: 200");
+							$('.qrPopup').fadeIn();
+							$('#closePopup').click(function(){
+								$('.qrPopup').fadeOut();
+							});
 							break;
 						default:
 							// alert("Error Contacting API: "+xhr.status);
@@ -116,21 +135,20 @@ $(document).ready(function()
 			</div>
 		</div>
 		<div class="row">
+			<div class="span1">
+			</div>
 			<div class="span4" style="text-align:center">
-				<img src="addImages/PhotoNotAvailable.gif" id="emptyImg"/>
-				<div id="addImgButt">
-					Add a Poster Image
-				</div>
+				<img src="images/no_poster.jpg" id="emptyImg"/>
 				<form id="myForm" action="imageCatch.php" method="post" enctype="multipart/form-data">
-					<!-- <form id="myForm" action="http://192.168.8.246/hackvt/HackVtProject/api/singleEvent.php" method="post" enctype="multipart/form-data"> -->
+					<form id="myForm" action="http://localhost/HackVtProject/api/singleEvent.php" method="post" enctype="multipart/form-data">
 					<ul id="formList">
 						<input name="user_id" type="hidden" value="1" />
-						<li><input type="file" name="myFile" id="fileInput" /></li>
-						<li><input type="submit" value="Add Image" /></li>
+						<li><input class="btn" type="file" name="myFile" id="fileInput" /></li>
+						<li><input class="btn" type="submit" value="Add Image" /></li>
 					</ul>
 				</form>
 			</div>
-			<div class="span2">
+			<div class="span1">
 				<div id="progress">
         			<div id="bar"></div>
         			<div id="percent">0%</div >
@@ -140,26 +158,34 @@ $(document).ready(function()
 			<div class="span6">
 				<ul>
 					<li class="formInputTitle">Event Name</li>
-					<li><input name="event_name" type="text" /></li>
+					<li><input name="event_name" id="event_name" type="text" /></li>
 					<li class="formInputTitle">Event Venue</li>
-					<li><input name="event_location" type="text" /></li>
+					<li><input name="event_location" id="event_location" type="text" /></li>
 					<li class="formInputTitle">Event Date</li>
-					<li><input name="event_date" type="text" /></li>
+					<li><input name="event_date" type="text" id="event_date" /></li>
 					<li class="formInputTitle">Event City</li>
-					<li><input name="event_city" type="text" /></li>
+					<li><input name="event_city" type="text" id="event_city"/></li>
 					<li class="formInputTitle">Event Description</li>
 					<li><textarea name="event_description" rows="10" cols="20" id="eventDescription"></textarea></li>
 					<li><div id="getQrButt">Get QR Code</div></li>
 				</ul>
 			</div>
 			<div class="span2" class="qrNest">
-				<ul id="qrResult">
-					<li>Here's you're QR code, chief</li>
-					<li id="qrNest">
-						<img src="https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=http://www.google.com" />
-					</li>
-				</ul>
+
 			</div>
 		</div>
+
+		<div class="qrPopup">
+			<div class="qrContain">
+				<h2> Here's your QR, Chief</h2>
+				
+						<img src="https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=http://www.google.com" />
+
+				<div id="closePopup">
+					Okay
+				</div>
+			</div>
+		</div>
+
 	</body>
 </html>

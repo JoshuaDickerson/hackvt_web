@@ -4,7 +4,7 @@
 		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
 		<link rel="stylesheet" type="text/css" href="css/styles.css">
 		<link rel="stylesheet" type="text/css" href="css/mapStyles.css">
-		<script type="text/css" href="bootstrap/js/bootstrap.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
 		  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=visualization&key=AIzaSyDlth022D4txU5HqXdDs1OZyGX0KdwKXIg&sensor=false"></script>
 
   <script type="text/javascript">
@@ -15,7 +15,76 @@
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         window.map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
-      }
+        $.ajax({
+				type: "GET",
+				url: "http://localhost/HackVtProject/api/qr.php",
+				// dataType: "json",
+				success: function(data){
+					console.log("Pull API Data: SUCCESS");
+					console.log(data);
+					// $('#qrPopup').fadeIn();
+				},
+				error: function(xhr, errorType, error){
+					// alert("error: "+xhr.status);
+					switch(xhr.status){
+						case 500:
+							// internal server error
+							// consider leaving app
+							console.log("Error: api response = 500");
+							break;
+						case 404:
+							// not found, stop trying
+							// consider leaving app
+							console.log('Error: api response = 404');
+							break;
+						case 400:
+							// bad request
+							console.log("Error: api response = 400");
+							break;
+						case 422:
+							console.log("Error: api response = 422");
+							break;
+						case 200:
+							console.log("Pull API data: 200");
+							// $('.qrPopup').fadeIn();
+							// $('#closePopup').click(function(){
+							// 	$('.qrPopup').fadeOut();
+							// });
+							break;
+						default:
+							// alert("Error Contacting API: "+xhr.status);
+							break;
+					}
+				}
+			});
+	 
+
+	// addMarkerFromApi(26, 44.4766215, -73.2099981);
+
+}
+
+function addMarkerFromApi(count, lat, lon){
+		// console.log("in addMarker()");
+
+
+		// test "bad type" response
+		// pin.type = "bullshit";
+
+		 var marker = new google.maps.Marker({
+        	position: new google.maps.LatLng(lat, lon),
+        	map: window.map,
+        	labelContent: count
+    	});
+
+		google.maps.event.addListener(marker, 'click', function() {
+    		window.map.setZoom(20);
+    		window.map.setCenter(marker.getPosition());
+  		});
+
+		pickupMarkers.push(marker);
+}
+
+
 		google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 
@@ -30,7 +99,11 @@
 					<li><a href="addBand.html">Update Profile</a></li>
 					<li><a href="addEvent.html">Add Event</a></li>
 				</ul>
+				<span class="pageId" style="float:right">
+					Existing Event Posters
+				</span>
 			</div>
+
 		</div>
 		<div class="row">
 			 <div id="map-canvas"></div>

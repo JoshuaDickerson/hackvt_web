@@ -1,6 +1,7 @@
 body{
 	/*background: url('../addImages/tree_bark.png');*/
 	background: url('../addImages/black_linen_v2.png');
+	overflow-y: hidden;
 
 }
 
@@ -9,5 +10,9 @@ body{
 }
 
 .music-list{
+	background: #eee;
+}
+
+.page-header{
 	background: #eee;
 }
