@@ -20,7 +20,7 @@
         window.map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
         $.ajax({
 				type: "GET",
-				url: "http://localhost/HackVtProject/api/qr.php",
+				url: "../HackVtProject/api/qr.php",
 				// dataType: "json",
 				success: function(data){
 					console.log("Pull API Data: SUCCESS");
