@@ -21,7 +21,15 @@
 				// dataType: "json",
 				success: function(data){
 					console.log("Pull API Data: SUCCESS");
-					console.log(data);
+					data = eval(data);
+					// console.log(data);
+					for(var ii=0; ii<data.length; ii++){
+						
+						var lat = parseFloat(data[ii].lat);
+						var lng = parseFloat(data[ii].lng);
+						console.log(lng);
+						addMarkerFromApi(data[ii].scanCount, lat, lng);
+					}
 					// $('#qrPopup').fadeIn();
 				},
 				error: function(xhr, errorType, error){
@@ -66,7 +74,7 @@
 function addMarkerFromApi(count, lat, lon){
 		// console.log("in addMarker()");
 
-
+		var pickupMarkers = [];
 		// test "bad type" response
 		// pin.type = "bullshit";
 

@@ -58,13 +58,14 @@ $(document).ready(function()
      $('#qrResult').hide();
 
      $('#getQrButt').click(function(){
+     	console.log(window.eventId);
      	var params = {
      			"event_name" : $('#event_name').val(),
      			"event_location" : $("#event_location").val(),
      			"event_date" : $("#event_date").val(),
      			"event_city" : $("#event_city").val(),
      			"event_description" : $("#event_description").val(),
-     			"band_id" : 1
+     			"band_id" : window.eventId
      			}
 	     $.ajax({
 				type: "PUT",
@@ -142,7 +143,7 @@ $(document).ready(function()
 				<form id="myForm" action="imageCatch.php" method="post" enctype="multipart/form-data">
 					<form id="myForm" action="http://localhost/HackVtProject/api/singleEvent.php" method="post" enctype="multipart/form-data">
 					<ul id="formList">
-						<input name="user_id" type="hidden" value="1" />
+						<input name="band_id" type="hidden" value="3" />
 						<li><input class="btn" type="file" name="myFile" id="fileInput" /></li>
 						<li><input class="btn" type="submit" value="Add Image" /></li>
 					</ul>
