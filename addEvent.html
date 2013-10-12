@@ -99,9 +99,9 @@ $(document).ready(function()
 	<body>
 		<div class="navbar">
 			<div class="navbar-inner">
-				<a class="brand" href="#">Title</a>
+				<a class="brand" href="#">VTunes</a>
 				<ul class="nav">
-					<li><a href="#">Home</a></li>
+					<li><a href="main.html">Home</a></li>
 					<li><a href="map.html">Map</a></li>
 					<li><a href="addBand.html">Update Profile</a></li>
 					<li class="active"><a href="addEvent.html">Add Event</a></li>
@@ -122,8 +122,9 @@ $(document).ready(function()
 					Add a Poster Image
 				</div>
 				<form id="myForm" action="imageCatch.php" method="post" enctype="multipart/form-data">
+					<!-- <form id="myForm" action="http://192.168.8.246/hackvt/HackVtProject/api/singleEvent.php" method="post" enctype="multipart/form-data"> -->
 					<ul id="formList">
-						<input name="band_id" type="hidden" value="1" />
+						<input name="user_id" type="hidden" value="1" />
 						<li><input type="file" name="myFile" id="fileInput" /></li>
 						<li><input type="submit" value="Add Image" /></li>
 					</ul>

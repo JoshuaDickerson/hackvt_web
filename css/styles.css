@@ -12,3 +12,19 @@
 	display:inline-block;
 	margin-top:5px;
 }
+
+
+.posters{
+	overflow-y:scroll;	
+	height:600px;
+}
+.music-list{
+	border:solid 1px #B3B3B3;
+	border-radius:5px;
+	overflow-y:scroll;
+	height:400px;
+}
+
+.table-height{
+	height:200px;
+}
