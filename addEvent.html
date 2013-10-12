@@ -46,7 +46,7 @@ $(document).ready(function()
 			$('#redUp2').fadeIn();
 			$('.eventInput').prop('disabled', false);
 
- 			return e.replace("images/no_poster.jpg",response.responseText);
+ 			return e.replace("images/no_poster.jpg", "../HackVtProject/" + response.responseText);
 
 		});
 	},
@@ -82,7 +82,7 @@ $(document).ready(function()
      	console.log(params);		
 	     $.ajax({
 				type: "PUT",
-				url: "http://localhost/HackVtProject/api/singleEvent.php",
+				url: "http://localhost/hackvt/HackVtProject/api/singleEvent.php",
 				dataType: "json",
 				data: params,
 				success: function(data){
@@ -128,7 +128,7 @@ $(document).ready(function()
 
 	     $.ajax({
 				type: "GET",
-				url: "http://localhost/HackVtProject/api/audio.php",
+				url: "http://localhost/hackvt/HackVtProject/api/audio.php",
 				dataType: "json",
 				success: function(data){
 					console.log("Audio data");
@@ -223,7 +223,7 @@ $(document).ready(function()
 			<div class="span4 imgUpNest" style="text-align:center">
 				<img src="images/no_poster.jpg" id="emptyImg"/>
 				<form id="myForm" action="imageCatch.php" method="post" enctype="multipart/form-data">
-					<form id="myForm" action="http://localhost/HackVtProject/api/singleEvent.php" method="post" enctype="multipart/form-data">
+					<form id="myForm" action="http://localhost/hackvt/HackVtProject/api/singleEvent.php" method="post" enctype="multipart/form-data">
 					<ul id="formList">
 						<input name="band_id" type="hidden" value="3" />
 						<li><input class="btn" type="file" name="myFile" id="fileInput" /></li>
