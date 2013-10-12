@@ -1,0 +1,46 @@
+body{
+	/*background: url('../addImages/tree_bark.png');*/
+	background: url('../addImages/black_linen_v2.png');
+
+}
+
+ul{
+	list-style-type: none;
+}
+
+.formInputTitle{
+	font-weight: bold;
+	font-size:1.1em;
+	color: #eee;
+}
+
+#addImgButt{
+	margin: 3px 0px 0px 0px;
+	padding: 4px 10px 4px 10px;
+	font-weight: bold;
+	background : #ddd;
+	border:solid 2px #333;
+}
+
+#addImgButt:hover{
+	cursor:pointer;
+	background : #eee;
+}
+
+#eventDescription{
+	width: 400px;
+}
+
+#getQrButt{
+	width: 120px;
+	padding: 4px 10px 4px 10px;
+	font-weight: bold;
+	background : #ddd;
+	border:solid 2px #333;
+}
+
+#getQrButt:hover{
+	cursor: pointer;
+	background : #eee;
+	border:solid 2px #333;
+}

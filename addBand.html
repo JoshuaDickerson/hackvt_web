@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="css/styles.css">
+		<link rel="stylesheet" type="text/css" href="css/addBand.css">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+		<script src="http://malsup.github.com/jquery.form.js"></script>
+		<script>
+$(document).ready(function()
+{
+
+	var options = { 
+    beforeSend: function() 
+    {
+    	$("#progress").show();
+    	//clear everything
+    	$("#bar").width('0%');
+    	$("#message").html("");
+		$("#percent").html("0%");
+    },
+    uploadProgress: function(event, position, total, percentComplete) 
+    {
+    	$("#bar").width(percentComplete+'%');
+    	$("#percent").html(percentComplete+'%');
+
+    
+    },
+    success: function() 
+    {
+        $("#bar").width('100%');
+    	$("#percent").html('100%');
+
+    },
+	complete: function(response) 
+	{
+		console.log(response);
+		$('#emptyImg').attr('src',function(i,e){
+ 			return e.replace("addImages/PhotoNotAvailable.gif",response.responseText);
+		});
+	},
+	error: function()
+	{
+		$("#message").html("<font color='red'> ERROR: unable to upload files</font>");
+
+	}
+     
+}; 
+
+     $("#myForm").ajaxForm(options);
+
+     $('#qrResult').hide();
+
+     $('#createProfileButton').click(function(){
+	     $.ajax({
+				type: "POST",
+				url: "http://192.168.8.246",
+				dataType: DATATYPE,
+				success: function(data){
+					console.log("Pull API Data: SUCCESS");
+					// console.log(data);
+					CALLBACK(data);
+				},
+				error: function(xhr, errorType, error){
+					// alert("error: "+xhr.status);
+					switch(xhr.status){
+						case 500:
+							// internal server error
+							// consider leaving app
+							console.log("Error: api response = 500");
+							break;
+						case 404:
+							// not found, stop trying
+							// consider leaving app
+							console.log('Error: api response = 404');
+							break;
+						case 400:
+							// bad request
+							console.log("Error: api response = 400");
+							break;
+						case 422:
+							console.log("Error: api response = 422");
+							break;
+						case 200:
+							console.log("Pull API data: 200");
+							break;
+						default:
+							// alert("Error Contacting API: "+xhr.status);
+							break;
+					}
+				}
+			});
+	 });
+
+});
+
+</script>
+	</head>
+	<body>
+		<div class="navbar">
+			<div class="navbar-inner">
+				<a class="brand" href="#">Title</a>
+				<ul class="nav">
+					<li><a href="#">Home</a></li>
+					<li><a href="map.html">Map</a></li>
+					<li class="active"><a href="addBand.html">Update Profile</a></li>
+					<li><a href="addEvent.html">Add Event</a></li>
+				</ul>
+				<span class="pageId" style="float:right">
+					Create Your Profile
+				</span>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span12">
+			</div>
+		</div>
+		<div class="row">
+			<div class="span4" style="text-align:center">
+				<img src="addImages/PhotoNotAvailable.gif" id="emptyImg"/>
+				<div id="addImgButt">
+					Add a band pic
+				</div>
+				<form id="myForm" action="imageCatch.php" method="post" enctype="multipart/form-data">
+					<ul id="formList">
+						<li><input type="file" name="myFile" id="fileInput" /></li>
+						<li><input type="submit" value="Add Image" /></li>
+					</ul>
+				</form>
+			</div>
+			<div class="span2">
+				<div id="progress">
+        			<div id="bar"></div>
+        			<div id="percent">0%</div >
+				</div>
+				<div id="message"></div>
+			</div>
+			<div class="span6">
+				<ul>
+					<li class="formInputTitle">Band Name</li>
+					<li><input name="bandName" type="text" /></li>
+					<li class="formInputTitle">Music Genre</li>
+					<li><input name="musicGenre" type="text" /></li>
+					<li class="formInputTitle">Band Description</li>
+					<li><textarea name="bandDescription" rows="10" cols="20" id="eventDescription"></textarea></li>
+					<li><div class="btn" id="saveProfile">Create Profile</div></li>
+				</ul>
+			</div>
+			<div class="span2" class="qrNest">
+				<ul id="qrResult">
+					<li>Here's you're QR code, chief</li>
+					<li id="qrNest">
+						<img src="https://chart.googleapis.com/chart?cht=qr&chs=200x200&chl=http://www.google.com" />
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>
