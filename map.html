@@ -5,13 +5,16 @@
 		<link rel="stylesheet" type="text/css" href="css/styles.css">
 		<link rel="stylesheet" type="text/css" href="css/mapStyles.css">
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+
 		  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=visualization&key=AIzaSyDlth022D4txU5HqXdDs1OZyGX0KdwKXIg&sensor=false"></script>
+
+		  <script src="js/MarkerWithLabel.js" type="text/javascript"></script>
 
   <script type="text/javascript">
       function initialize() {
         var mapOptions = {
           center: new google.maps.LatLng(44.476621500000000, -73.209998100000000),
-          zoom: 8,
+          zoom: 16,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         window.map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
@@ -73,15 +76,19 @@
 
 function addMarkerFromApi(count, lat, lon){
 		// console.log("in addMarker()");
+		console.log(count);
 
 		var pickupMarkers = [];
 		// test "bad type" response
 		// pin.type = "bullshit";
 
-		 var marker = new google.maps.Marker({
+		 var marker = new MarkerWithLabel({
         	position: new google.maps.LatLng(lat, lon),
         	map: window.map,
-        	labelContent: count
+        	labelContent: "sdff",
+        	labelAnchor: new google.maps.Point(3, 30),
+      		labelClass: "labels", // the CSS class for the label
+       		labelInBackground: false
     	});
 
 		google.maps.event.addListener(marker, 'click', function() {
@@ -90,6 +97,10 @@ function addMarkerFromApi(count, lat, lon){
   		});
 
 		pickupMarkers.push(marker);
+		 var iw = new google.maps.InfoWindow({
+       		content: String(count)+" scans"
+     	});
+     google.maps.event.addListener(marker, "click", function (e) { iw.open(map, marker); });
 }
 
 
@@ -104,7 +115,6 @@ function addMarkerFromApi(count, lat, lon){
 				<ul class="nav">
 					<li><a href="main.html">Home</a></li>
 					<li class="active"><a href="map.html">Map</a></li>
-					<li><a href="addBand.html">Update Profile</a></li>
 					<li><a href="addEvent.html">Add Event</a></li>
 				</ul>
 				<span class="pageId" style="float:right">

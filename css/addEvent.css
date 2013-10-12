@@ -28,7 +28,7 @@ ul{
 }
 
 #eventDescription{
-	width: 400px;
+	width: 300px;
 }
 
 #getQrButt{
@@ -46,12 +46,34 @@ ul{
 }
 
 #formList{
-	background: #fff;
+	/*background: #fff;*/
 	text-align: left;
-	margin: -60px 0;
+	margin: 10px 0px 0px 0px;
 	z-index: 1000;
 }
 
 #getQrButt{
 	display:none;
+}
+
+#submitButt{
+	border:solid 1px #000;
+	padding: 7px 0px 8px 0px;
+	margin: 5px 0px 0px 0px;
+	display: block;
+	width: 100%;
+}
+
+.indicatorRow div{
+	/*border:solid 1px blue;*/
+	text-align: center;
+}
+
+.redUp{
+	height: 70px;
+	display: none;
+}
+
+.imgUpNest img{
+	max-height: 380px;
 }

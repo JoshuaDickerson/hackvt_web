@@ -10,6 +10,8 @@
 $(document).ready(function()
 {
 
+	$('#redUp1').fadeIn();
+
 	var options = { 
     beforeSend: function() 
     {
@@ -36,11 +38,14 @@ $(document).ready(function()
 	{
 		console.log(response);
 		$('#emptyImg').attr('src',function(i,e){
-			$('#getQrButt').show();
 			var ed = response.responseText.split("/");
 			var eventI = ed[1].split(".");
 			window.eventId = eventI[0];
-			alert(window.eventId);
+			// alert(window.eventId);
+			$('#redUp1').fadeOut();
+			$('#redUp2').fadeIn();
+			$('.eventInput').prop('disabled', false);
+
  			return e.replace("images/no_poster.jpg",response.responseText);
 
 		});
@@ -52,7 +57,7 @@ $(document).ready(function()
 	}
      
 }; 
-
+	
      $("#myForm").ajaxForm(options);
 
      $('#qrResult').hide();
@@ -112,6 +117,76 @@ $(document).ready(function()
 			});
 	 });
 
+
+	     $.ajax({
+				type: "GET",
+				url: "http://localhost/HackVtProject/api/audio.php",
+				dataType: "json",
+				success: function(data){
+					console.log("Audio data");
+					console.log(data);
+					var musicTable = "";
+					for(var ii=0; ii<data.length; ii++){
+						musicTable += "<tr>";
+						musicTable += "<input type='hidden' value='"+data[ii].id+"' />"; 
+						musicTable += '<td style="vertical-align: middle" width="30%"><input class="musicCheckbox" type="checkbox" disabled/>&nbsp; &nbspAdd This Track</td>';
+						musicTable += "<td>";
+						musicTable += data[ii].title;
+						musicTable += "<audio controls>";
+						musicTable += "<source src='" + data[ii].audio_url +"' type='audio/mpeg'>";
+						musicTable += "</audio>";
+						musicTable += "</td>";
+						musicTable += "</tr>";
+					}
+
+					$('.musicTable').html(musicTable);
+					$('.musicCheckbox').click(function(){
+		// alert('dfgdfg');
+					$('#redUp3').fadeOut(function(){
+					$('#getQrButt').fadeIn();
+				});
+	});
+
+				},
+				error: function(xhr, errorType, error){
+					// alert("error: "+xhr.status);
+					switch(xhr.status){
+						case 500:
+							// internal server error
+							// consider leaving app
+							console.log("Error: api response = 500");
+							break;
+						case 404:
+							// not found, stop trying
+							// consider leaving app
+							console.log('Error: api response = 404');
+							break;
+						case 400:
+							// bad request
+							console.log("Error: api response = 400");
+							break;
+						case 422:
+							console.log("Error: api response = 422");
+							break;
+						case 200:
+							console.log("Pull API data: 200");
+							break;
+						default:
+							// alert("Error Contacting API: "+xhr.status);
+							break;
+					}
+				}
+			});
+
+	$('#eventDescription').keyup(function(){
+		// alert("sgsg");
+		if($('#event_name').val() != ""){
+			$('#redUp2').fadeOut();
+			$('#redUp3').fadeIn();
+			$('.musicCheckbox').prop('disabled', false);
+		}
+	});
+
 });
 
 </script>
@@ -123,7 +198,6 @@ $(document).ready(function()
 				<ul class="nav">
 					<li><a href="main.html">Home</a></li>
 					<li><a href="map.html">Map</a></li>
-					<li><a href="addBand.html">Update Profile</a></li>
 					<li class="active"><a href="addEvent.html">Add Event</a></li>
 				</ul>
 				<span class="pageId" style="float:right">
@@ -138,43 +212,56 @@ $(document).ready(function()
 		<div class="row">
 			<div class="span1">
 			</div>
-			<div class="span4" style="text-align:center">
+			<div class="span4 imgUpNest" style="text-align:center">
 				<img src="images/no_poster.jpg" id="emptyImg"/>
 				<form id="myForm" action="imageCatch.php" method="post" enctype="multipart/form-data">
 					<form id="myForm" action="http://localhost/HackVtProject/api/singleEvent.php" method="post" enctype="multipart/form-data">
 					<ul id="formList">
 						<input name="band_id" type="hidden" value="3" />
 						<li><input class="btn" type="file" name="myFile" id="fileInput" /></li>
-						<li><input class="btn" type="submit" value="Add Image" /></li>
+						<li><input class="btn" id="submitButt" type="submit" value="Add Image" /></li>
 					</ul>
 				</form>
 			</div>
-			<div class="span1">
-				<div id="progress">
-        			<div id="bar"></div>
-        			<div id="percent">0%</div >
-				</div>
-				<div id="message"></div>
-			</div>
-			<div class="span6">
+			<div class="span5">
 				<ul>
 					<li class="formInputTitle">Event Name</li>
-					<li><input name="event_name" id="event_name" type="text" /></li>
+					<li><input name="event_name" id="event_name" class="eventInput" type="text" disabled/></li>
 					<li class="formInputTitle">Event Venue</li>
-					<li><input name="event_location" id="event_location" type="text" /></li>
+					<li><input name="event_location" id="event_location" class="eventInput" type="text" disabled/></li>
 					<li class="formInputTitle">Event Date</li>
-					<li><input name="event_date" type="text" id="event_date" /></li>
+					<li><input name="event_date" type="text" id="event_date" class="eventInput" disabled/></li>
 					<li class="formInputTitle">Event City</li>
-					<li><input name="event_city" type="text" id="event_city"/></li>
+					<li><input name="event_city" type="text" id="event_city" class="eventInput" disabled/></li>
 					<li class="formInputTitle">Event Description</li>
-					<li><textarea name="event_description" rows="10" cols="20" id="eventDescription"></textarea></li>
-					<li><div id="getQrButt">Get QR Code</div></li>
+					<li><textarea name="event_description" rows="10" cols="20" id="eventDescription" class="eventInput" disabled></textarea></li>
+					
 				</ul>
 			</div>
-			<div class="span2" class="qrNest">
 
+			<div class="span6 music-list">
+				<div class="panel panel-default">
+				  <!-- Default panel contents -->
+				  <div class="panel-heading"><h5>Select which songs to attach to your advertisment</h5></div>
+
+				<table class="table table-striped musicTable">
+					<!-- music tracks here -->
+				</table>
+
+				</div>
 			</div>
+
+		
+
 		</div>
+
+		<div class="row indicatorRow">
+			<div class="span1"></div>
+			<div class="span4"><img class="redUp" id="redUp1" src="images/red_up.png" /></div>
+			<div class="span5"><img class="redUp" id="redUp2" src="images/red_up.png" /></div>
+			<div class="span6"><img class="redUp" id="redUp3" src="images/red_up.png" /><div id="getQrButt">Get QR</div></div>
+		</div>
+		
 
 		<div class="qrPopup">
 			<div class="qrContain">
@@ -185,6 +272,12 @@ $(document).ready(function()
 				<div id="closePopup">
 					Okay
 				</div>
+
+				<div id="progress">
+        			<div id="bar"></div>
+        			<div id="percent" style="display:none">0%</div >
+				</div>
+				<div id="message"></div>
 			</div>
 		</div>
 
