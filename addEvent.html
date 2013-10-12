@@ -63,15 +63,23 @@ $(document).ready(function()
      $('#qrResult').hide();
 
      $('#getQrButt').click(function(){
-     	console.log(window.eventId);
+     	var musicIds = [];
+     	$("input:checked").each(function () {
+        	musicIds.push($(this).parent().parent().find(".hiddenValue").val());
+        	// alert("Do something for: " + id + ", " + answer);
+    	});
+     	console.log(musicIds);
      	var params = {
      			"event_name" : $('#event_name').val(),
      			"event_location" : $("#event_location").val(),
      			"event_date" : $("#event_date").val(),
      			"event_city" : $("#event_city").val(),
      			"event_description" : $("#event_description").val(),
-     			"band_id" : window.eventId
+     			"band_id" : window.eventId,
+     			"audio_ids" : musicIds
      			}
+
+     	console.log(params);		
 	     $.ajax({
 				type: "PUT",
 				url: "http://localhost/HackVtProject/api/singleEvent.php",
@@ -128,7 +136,7 @@ $(document).ready(function()
 					var musicTable = "";
 					for(var ii=0; ii<data.length; ii++){
 						musicTable += "<tr>";
-						musicTable += "<input type='hidden' value='"+data[ii].id+"' />"; 
+						musicTable += "<input type='hidden' value='"+data[ii].id+"' class='hiddenValue'/>"; 
 						musicTable += '<td style="vertical-align: middle" width="30%"><input class="musicCheckbox" type="checkbox" disabled/>&nbsp; &nbspAdd This Track</td>';
 						musicTable += "<td>";
 						musicTable += data[ii].title;
