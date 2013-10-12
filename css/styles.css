@@ -1,7 +1,14 @@
 .row{
-	border:solid 1px red;
+	/*border:solid 1px red;*/
 }
 
 .span2{
-	border:solid 1px blue;
+	/*border:solid 1px blue;*/
+}
+
+.pageId{
+	font-size:1.2em;
+	font-weight:bold;
+	display:inline-block;
+	margin-top:5px;
 }
